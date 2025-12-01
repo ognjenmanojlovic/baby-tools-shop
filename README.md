@@ -32,6 +32,8 @@ This project demonstrates:
 - Running Django inside a Docker container
 - Deploying a containerized application to a remote server
 
+![Baby Tools Shop Homepage](project_images/homepage.png)
+
 ## Tech Stack
 - **Python:** 3.11  
 - **Framework:** Django 4.0.2  
@@ -44,7 +46,7 @@ baby-tools-shop/
 ├─ babyshop_app/
 │  ├─ babyshop/           
 │  ├─ products/           
-│  ├─ templates/          
+│  ├─ templates/
 │  ├─ static/             
 │  ├─ manage.py           
 ├─ .gitignore
