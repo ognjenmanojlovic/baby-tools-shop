@@ -1,7 +1,7 @@
 # Baby Tools Shop
 
 A simple Django-based web application for browsing baby product categories and products.  
-This project is part of the DevSecOps course and demonstrates how to run a Django app locally, inside a Docker container, and deploy it to a server.
+This project is part of the DevSecOps course and demonstrates how to run a Django app locally, inside a Docker container and deploy it to a server.
 
 ## Table of Contents
 - [Description](#description)
