@@ -47,7 +47,8 @@ baby-tools-shop/
 │  ├─ templates/          
 │  ├─ static/             
 │  ├─ manage.py           
-├─ .gitignore             
+├─ .gitignore
+├─ Checklist_Baby_Tools_Shop             
 ├─ Dockerfile             
 ├─ requirements.txt       
 ├─ README.md              
