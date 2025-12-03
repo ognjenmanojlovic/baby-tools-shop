@@ -107,7 +107,7 @@ http://127.0.0.1:8025/admin
 Create an admin user:
 
 ```bash
-docker exec -it $(docker ps -q --filter ancestor=baby-tools-shop) python babyshop_app/manage.py createsuperuser
+docker exec -it baby-tools-shop python babyshop_app/manage.py createsuperuser
 ```
 
 ### Creating categories and products
