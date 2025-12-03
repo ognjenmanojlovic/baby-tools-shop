@@ -1,5 +1,5 @@
 # Base image: lightweight and optimized Python 3.11
-FROM python:3.11-slim
+FROM python:3.9-slim
 
 # Prevent Python from writing .pyc files and enable unbuffered output
 ENV PYTHONDONTWRITEBYTECODE=1
