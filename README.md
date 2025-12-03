@@ -1,7 +1,7 @@
 # Baby Tools Shop
 
 A simple Django-based web application for browsing baby product categories and products.  
-This project is part of the DevSecOps course and demonstrates how to run a Django app locally, inside a Docker container and deploy it to a server.
+This project is part of the DevSecOps course and demonstrates how to run the application inside a Docker container and deploy it to a server.
 
 ## Table of Contents
 - [Description](#description)
@@ -9,7 +9,6 @@ This project is part of the DevSecOps course and demonstrates how to run a Djang
 - [Project Structure](#project-structure)
 - [Quickstart](#quickstart)
   - [Prerequisites](#prerequisites)
-  - [Run locally](#run-locally)
   - [Run with Docker](#run-with-docker)
 - [Usage](#usage)
   - [Admin panel](#admin-panel)
@@ -28,14 +27,13 @@ Users can browse categories and products, and administrators can manage shop con
 
 This project demonstrates:
 - Django project structure
-- Running Django locally using a virtual environment
 - Running Django inside a Docker container
 - Deploying a containerized application to a remote server
 
 ![Baby Tools Shop Homepage](project_images/homepage.png)
 
 ## Tech Stack
-- **Python:** 3.11  
+- **Python:** 3.9  
 - **Framework:** Django 4.0.2  
 - **Database:** SQLite  
 - **Containerization:** Docker  
@@ -50,60 +48,66 @@ baby-tools-shop/
 │  ├─ static/             
 │  ├─ manage.py           
 ├─ .gitignore
-├─ Checklist_Baby_Tools_Shop             
-├─ Dockerfile             
-├─ requirements.txt       
-├─ README.md              
+├─ Checklist_Baby_Tools_Shop
+├─ Dockerfile
+├─ example.env
+├─ requirements.txt
+├─ README.md
 ```
 
 ## Quickstart
 
 ### Prerequisites
-- Python 3.11  
-- pip  
-- Git  
-- Docker (for containerized run)  
-
-### Run locally
-```bash
-git clone https://github.com/ognjenmanojlovic/baby-tools-shop.git
-cd baby-tools-shop
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cd babyshop_app
-python manage.py migrate
-python manage.py runserver
-```
-
-Open:  
-`http://127.0.0.1:8000`
+- Docker installed  
+- Git installed  
 
 ### Run with Docker
-```bash
-docker build -t baby-tools-shop .
-docker run --rm -p 8025:8025 baby-tools-shop
-```
 
-Open:  
-`http://127.0.0.1:8025`
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ognjenmanojlovic/baby-tools-shop.git
+   ```
+
+2. **Move into the project directory**
+   ```bash
+   cd baby-tools-shop
+   ```
+
+3. **Create your environment file**
+   ```bash
+   cp example.env .env
+   ```
+   *Open `.env` and adjust the values to your environment.*
+
+4. **Build the Docker image**
+   ```bash
+   docker build -t baby-tools-shop .
+   ```
+
+5. **Run the container**
+   ```bash
+   docker run --rm --env-file .env -p 8025:8025 baby-tools-shop
+   ```
+
+6. **Open the application in your browser**
+   ```
+   http://127.0.0.1:8025
+   ```
 
 ## Usage
 
 ### Admin panel
-Local:
-```
-http://127.0.0.1:8000/admin
-```
-Docker:
+
+To access the Django admin interface:
+
 ```
 http://127.0.0.1:8025/admin
 ```
 
-Create admin user:
+Create an admin user:
+
 ```bash
-cd babyshop_app
-python manage.py createsuperuser
+docker exec -it $(docker ps -q --filter ancestor=baby-tools-shop) python babyshop_app/manage.py createsuperuser
 ```
 
 ### Creating categories and products
@@ -112,62 +116,72 @@ Inside the Django admin:
 - Create Products (name, description, price, category, image)
 
 ### Static and media files
-- Static files are served by Django directly  
+- Static files are served by Django  
 - Uploaded product images go into `media/` (ignored by Git)
 
 ## Configuration
 
 ### Environment variables
-Recommended for production deployments:
+
+Environment variables are used for sensitive and configurable settings:
+
 ```
 DJANGO_SECRET_KEY
 DJANGO_DEBUG
 DJANGO_ALLOWED_HOSTS
 ```
 
+Values must be stored in `.env`, not committed to Git.
+
 ## Deployment
 
 ### Deploying to a server
 
-1. Install Docker (if missing)
-```
-sudo apt update
-sudo apt install -y docker.io
-```
+1. **Install Docker**
+   ```bash
+   sudo apt update
+   sudo apt install -y docker.io
+   ```
 
-2. Clone the repository
-```
-git clone https://github.com/ognjenmanojlovic/baby-tools-shop.git
-cd baby-tools-shop
-git checkout development
-```
+2. **Clone the repository**
+   ```bash
+   git clone https://github.com/ognjenmanojlovic/baby-tools-shop.git
+   cd baby-tools-shop
+   git checkout development
+   ```
 
-3. Build the Docker image
-```
-sudo docker build -t baby-tools-shop .
-```
+3. **Prepare your environment variables**
+   ```bash
+   cp example.env .env
+   ```
+   Edit `.env` and set:
+   - `DJANGO_SECRET_KEY` to a secure value  
+   - `DJANGO_ALLOWED_HOSTS=<your-server-ip>`  
 
-4. Run the container  
-Replace `<your-server-ip>` with your actual server IP.
-```
-sudo docker run -d   --restart unless-stopped   -p 8025:8025   -e DJANGO_ALLOWED_HOSTS="<your-server-ip>,localhost,127.0.0.1"   --name baby-tools-shop   baby-tools-shop
-```
+4. **Build the Docker image**
+   ```bash
+   sudo docker build -t baby-tools-shop .
+   ```
 
-5. Access the application
-```
-http://<your-server-ip>:8025
-```
+5. **Run the container**
+   ```bash
+   sudo docker run -d --restart unless-stopped --env-file .env -p 8025:8025 --name baby-tools-shop baby-tools-shop
+   ```
+
+6. **Open in browser**
+   ```
+   http://<your-server-ip>:8025
+   ```
 
 ## Testing checklist
-- [x] App runs locally  
-- [x] App runs inside Docker  
-- [x] App deployed on server  
-- [x] App reachable via `<your-server-ip>:8025`  
+- [x] Application runs inside Docker  
+- [x] Application deployed on server  
+- [x] Public access works via `<your-server-ip>:8025`  
 
 ## Security notes
 - No secrets or passwords are committed  
-- Environment variables should be used for sensitive data  
-- No SSH keys, API keys, or tokens stored in the repository  
+- `.env` is ignored by Git  
+- Use secure values before running in production  
 
 ## Author
 **Ognjen Manojlovic**
